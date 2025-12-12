@@ -34,13 +34,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Set EB environment variables
+      - name: Initialize Elastic Beanstalk (Correct)
+        run: |
+          eb init pdf-kg-backend \
+            --region us-east-1 \
+            --platform "Python 3.10 running on 64bit Amazon Linux 2"
+
+      - name: Set Environment Variables in EB
         run: |
           eb use Pdf-kg-backend-env
-          eb setenv DATABASE_URL=${{ secrets.DATABASE_URL }} \
-                    GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-                    CONV_MODEL=openai/gpt-oss-120b \
-                    TITLE_MODEL=llama-3.3-70b-versatile
+          eb setenv DATABASE_URL="${{ secrets.DATABASE_URL }}" GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" CONV_MODEL="openai/gpt-oss-120b" TITLE_MODEL="llama-3.3-70b-versatile"
 
       - name: Create deployment package
         run: zip -r deploy.zip . -x "*.git*" "__pycache__/*"
