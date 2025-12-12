@@ -38,7 +38,7 @@ jobs:
         run: |
           eb init pdf-kg-backend \
             --region us-east-1 \
-            --platform "Python 3.10 running on 64bit Amazon Linux 2"
+            --platform "Python 3.12 running on 64bit Amazon Linux 2023"
 
       - name: Set Environment Variables in EB
         run: |
